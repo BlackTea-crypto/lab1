@@ -1,0 +1,64 @@
+#!/bin/bash
+
+filename="$1"
+
+if [ -z $filename ]; 
+then
+	echo "Имя файла не указано"
+	exit 1
+fi
+
+if [ ! -f $filename ]; 
+then
+        echo "Файл не существует"
+	exit 1
+fi
+
+add() {
+	echo "Введите дату: "
+	read date
+	echo "Введите категорию расхода: "
+	read category
+	echo "Введите сумму: "
+	read amount
+	echo "Введите описание: "
+	read description
+
+	echo "Дата: $date Категория расхода: $category Сумма: $amount Описание: $description" >> $filename
+	echo "Запись добавлена"
+}
+
+view() {
+	if [ ! -s $filename ]; 
+	then
+		echo "Файл пуст"
+		return
+	fi
+
+	echo "Записи о расходах: "
+	cat $filename
+}
+
+while true; 
+do
+	echo "Выберите действие: "
+	echo "1. Добавить запись"
+	echo "2. Просмотреть записи"
+	echo "3. Выйти"
+	read choice
+
+	case $choice in
+		1)
+			add
+			;;
+		2)
+			view
+			;;
+		3)
+			exit 0
+			;;
+		*)
+			echo "Неверный выбор, введите 1, 2 или 3"
+			;;
+	esac
+done
